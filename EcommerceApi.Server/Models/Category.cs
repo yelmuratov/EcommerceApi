@@ -8,9 +8,7 @@ namespace EcommerceApi.Server.Models
         [Required]
         [StringLength(50)]
         public required string Name { get; set; }
-
         public string? Description { get; set; }    
-
         public ICollection<Product> Products { get; set; } = new List<Product>();
     }
 }

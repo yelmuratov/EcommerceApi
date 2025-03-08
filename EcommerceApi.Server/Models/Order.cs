@@ -9,19 +9,23 @@ namespace EcommerceApi.Server.Models
         public int Id { get; set; }
 
         [Required]
+        public int UserId { get; set; } 
+
         [ForeignKey("UserId")]
-        public required User user_id { get; set; }
+        public required User User { get; set; } 
 
         [Required]
-        public DateTime order_date { get; set; } = DateTime.UtcNow;
+        public DateTime OrderDate { get; set; } = DateTime.UtcNow;
 
         [Required]
-        public decimal total_amount { get; set; }
+        public decimal TotalAmount { get; set; }
 
         [Required]
-        public OrderStatuses order_status { get; set; } = OrderStatuses.processing;
+        public OrderStatuses OrderStatus { get; set; } = OrderStatuses.processing;
 
         [Required]
-        public PaymentStatuses payment_status { get; set; } = PaymentStatuses.pending;
+        public PaymentStatuses PaymentStatus { get; set; } = PaymentStatuses.pending;
+
+        public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }
 }
