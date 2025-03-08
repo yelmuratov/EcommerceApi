@@ -1,29 +1,30 @@
-﻿using EcommerceApi.Server.Models;
-using EcommerceApi.Server.Interfaces.UserInterfaces;
-using EcommerceApi.Server.Constants;
+﻿using AutoMapper;
+using BCrypt.Net;
 using EcommerceApi.Server.DTOs.UserDTOs;
+using EcommerceApi.Server.Interfaces.UserInterfaces;
+using EcommerceApi.Server.Models;
+using EcommerceApi.Server.Constants;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EcommerceApi.Server.Services
 {
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IMapper mapper)
         {
-            _userRepository = userRepository;
+            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<IEnumerable<UserDTO>> GetAllUsers()
         {
             var users = await _userRepository.GetAllAsync();
-            return users.Select(u => new UserDTO
-            {
-                Id = u.Id,
-                Username = u.Username,
-                Email = u.Email,
-                Role = u.role
-            }).ToList();
+            return _mapper.Map<IEnumerable<UserDTO>>(users); // ✅ AutoMapper handles conversion
         }
 
         public async Task<UserDTO?> GetUserById(int id)
@@ -31,13 +32,7 @@ namespace EcommerceApi.Server.Services
             var user = await _userRepository.GetByIdAsync(id);
             if (user == null) return null;
 
-            return new UserDTO
-            {
-                Id = user.Id,
-                Username = user.Username,
-                Email = user.Email,
-                Role = user.role
-            };
+            return _mapper.Map<UserDTO>(user); // ✅ AutoMapper conversion
         }
 
         public async Task<UserDTO> RegisterUser(UserCreateDTO userDto)
@@ -48,23 +43,12 @@ namespace EcommerceApi.Server.Services
                 throw new Exception("Username already exists");
             }
 
-            var newUser = new User
-            {
-                Username = userDto.Username,
-                Email = userDto.Email,
-                Password = BCrypt.Net.BCrypt.HashPassword(userDto.Password), 
-                role = Roles.Customer 
-            };
+            var newUser = _mapper.Map<User>(userDto);
+            newUser.Password = BCrypt.Net.BCrypt.HashPassword(userDto.Password); // ✅ Hash password
+            newUser.role = Roles.Customer; // ✅ Set default role
 
             var createdUser = await _userRepository.AddAsync(newUser);
-
-            return new UserDTO
-            {
-                Id = createdUser.Id,
-                Username = createdUser.Username,
-                Email = createdUser.Email,
-                Role = createdUser.role
-            };
+            return _mapper.Map<UserDTO>(createdUser);
         }
 
         public async Task<UserDTO?> AuthenticateUser(UserLoginDTO loginDto)
@@ -72,16 +56,10 @@ namespace EcommerceApi.Server.Services
             var user = await _userRepository.GetByUsernameAsync(loginDto.Username);
             if (user == null || !BCrypt.Net.BCrypt.Verify(loginDto.Password, user.Password))
             {
-                return null; 
+                return null;
             }
 
-            return new UserDTO
-            {
-                Id = user.Id,
-                Username = user.Username,
-                Email = user.Email,
-                Role = user.role
-            };
+            return _mapper.Map<UserDTO>(user); // ✅ AutoMapper conversion
         }
 
         public async Task<UserDTO?> UpdateUser(int id, UserUpdateDTO userDto)
@@ -89,18 +67,10 @@ namespace EcommerceApi.Server.Services
             var user = await _userRepository.GetByIdAsync(id);
             if (user == null) return null;
 
-            user.Username = userDto.Username;
-            user.Email = userDto.Email;
+            _mapper.Map(userDto, user); // ✅ AutoMapper updates entity
+            var updatedUser = await _userRepository.UpdateAsync(user);
 
-            await _userRepository.UpdateAsync(user);
-
-            return new UserDTO
-            {
-                Id = user.Id,
-                Username = user.Username,
-                Email = user.Email,
-                Role = user.role
-            };
+            return _mapper.Map<UserDTO>(updatedUser);
         }
 
         public async Task<bool> DeleteUser(int id)

@@ -1,7 +1,10 @@
 ﻿using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
+using EcommerceApi.Server.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 // ✅ Configure Entity Framework with SQL Server
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
