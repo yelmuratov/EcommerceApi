@@ -1,13 +1,13 @@
-﻿using EcommerceApi.Server.Models;
+﻿using EcommerceApi.Server.DTOs.ProductDTOs;
 
 namespace EcommerceApi.Server.ProductInterfaces
 {
     public interface IProductService
     {
-        Task<IEnumerable<Product>> GetAllProducts();
-        Task<Product> GetProductById(int id);
-        Task<Product> CreateProduct(Product product);
-        Task<Product> UpdateProduct(Product product);
+        Task<IEnumerable<ProductDTO>> GetAllProducts();
+        Task<ProductDTO?> GetProductById(int id);
+        Task<ProductDTO> CreateProduct(ProductCreateDTO productDto);
+        Task<ProductDTO?> UpdateProduct(int id, ProductCreateDTO productDto);
         Task<bool> DeleteProduct(int id);
     }
 }

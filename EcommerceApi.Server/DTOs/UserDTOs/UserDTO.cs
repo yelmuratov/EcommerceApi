@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using EcommerceApi.Server.Constants;
 
 namespace EcommerceApi.Server.DTOs.UserDTOs
 {
@@ -14,6 +15,6 @@ namespace EcommerceApi.Server.DTOs.UserDTOs
         [EmailAddress]
         public required string Email { get; set; }
 
-        public string? Role { get; set; }
+        public Roles Role { get; set; } = Roles.Customer;
     }
 }

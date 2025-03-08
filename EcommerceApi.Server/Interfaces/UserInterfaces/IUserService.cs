@@ -1,14 +1,14 @@
-﻿using EcommerceApi.Server.Models;
+﻿using EcommerceApi.Server.DTOs.UserDTOs;
 
 namespace EcommerceApi.Server.Interfaces.UserInterfaces
 {
     public interface IUserService
     {
-        Task<IEnumerable<User>> GetAllUsers();
-        Task<User> GetUserById(int id);
-        Task<User> RegisterUser(User user, string password);
-        Task<User> AuthenticateUser(string email, string password);
-        Task<User> UpdateUser(User user);
+        Task<IEnumerable<UserDTO>> GetAllUsers();
+        Task<UserDTO?> GetUserById(int id);
+        Task<UserDTO> RegisterUser(UserCreateDTO userDto);
+        Task<UserDTO?> AuthenticateUser(UserLoginDTO loginDto);
+        Task<UserDTO?> UpdateUser(int id, UserUpdateDTO userDto);
         Task<bool> DeleteUser(int id);
     }
 }
