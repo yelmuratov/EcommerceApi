@@ -15,7 +15,6 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // ✅ Store Enums as String in Database
         modelBuilder.Entity<Order>()
             .Property(o => o.OrderStatus)
             .HasConversion<string>();

@@ -24,7 +24,7 @@ namespace EcommerceApi.Server.Services
         public async Task<IEnumerable<UserDTO>> GetAllUsers()
         {
             var users = await _userRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<UserDTO>>(users); // ✅ AutoMapper handles conversion
+            return _mapper.Map<IEnumerable<UserDTO>>(users); 
         }
 
         public async Task<UserDTO?> GetUserById(int id)
