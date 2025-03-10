@@ -7,6 +7,6 @@ namespace EcommerceApi.Server.Interfaces.OrderInterfaces
         Task<Order> GetByIdAsync(int id);
         Task<Order> AddAsync(Order order);
         Task<Order> UpdateAsync(Order order);
-        Task<Order> DeleteAsync(int id);
+        Task<bool> DeleteAsync(int id);
     }
 }

@@ -1,12 +1,8 @@
 ﻿using AutoMapper;
 using EcommerceApi.Server.Interfaces.PaymentInterfaces;
-using EcommerceApi.Server.DTOs.PaymentDTOs;
 using EcommerceApi.Server.Models;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace EcommerceApi.Server.Services
+namespace EcommerceApi.Server.Services  
 {
     public class PaymentService : IPaymentService
     {

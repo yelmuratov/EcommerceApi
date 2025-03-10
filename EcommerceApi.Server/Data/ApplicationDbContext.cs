@@ -17,11 +17,11 @@ public class ApplicationDbContext : DbContext
     {
         // ✅ Store Enums as String in Database
         modelBuilder.Entity<Order>()
-            .Property(o => o.order_status)
+            .Property(o => o.OrderStatus)
             .HasConversion<string>();
 
         modelBuilder.Entity<Payment>()
-            .Property(p => p.payment_status)
+            .Property(p => p.PaymentStatus)
             .HasConversion<string>();
 
         modelBuilder.Entity<User>()
